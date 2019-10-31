@@ -8,6 +8,7 @@ const entryPoint = document.querySelector(".cards");
 axios
   .get("https://api.github.com/users/bseverino")
   .then(response => {
+    console.log(response);
     const newCard = cardCreator(response.data);
     entryPoint.appendChild(newCard);    
   });
@@ -76,6 +77,7 @@ function cardCreator(obj){
         cardFollowers = document.createElement("p");
         cardFollowing = document.createElement("p"),
         cardBio = document.createElement("p");
+        linkHtml = obj.html_url;
 
         card.appendChild(cardImage);
         card.appendChild(cardInfo);
@@ -83,10 +85,11 @@ function cardCreator(obj){
         cardInfo.appendChild(cardUsername);
         cardInfo.appendChild(cardLocation);
         cardInfo.appendChild(cardProfile);
+        cardProfile.appendChild(cardLink);
         cardInfo.appendChild(cardFollowers);
         cardInfo.appendChild(cardFollowing);
         cardInfo.appendChild(cardBio);
-        cardProfile.appendChild(cardLink);
+        
 
         card.classList.add("card");
         cardInfo.classList.add("card-info");
@@ -97,9 +100,7 @@ function cardCreator(obj){
         cardName.textContent = obj.name;
         cardUsername.textContent = obj.login;
         cardLocation.textContent = obj.location;
-        cardProfile.textContent = `Profile: `;
-        cardLink.textContent = obj.html_url;
-        cardLink.href = obj.html_url;
+        cardLink.innerHTML = "Profile: " + linkHtml.link(obj.html_url);
         cardFollowers.textContent = `Followers: ${obj.followers}`;
         cardFollowing.textContent = `Followers: ${obj.following}`;
         cardBio.textContent = obj.bio;
