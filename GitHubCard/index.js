@@ -3,6 +3,16 @@
            https://api.github.com/users/<your name>
 */
 
+const entryPoint = document.querySelector(".cards");
+
+axios
+  .get("https://api.github.com/users/bseverino")
+  .then(response => {
+    console.log(response);
+    const newProfile = cardCreator(response.data);
+    entryPoint.appendChild(newProfile);    
+  });
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -45,6 +55,49 @@ const followersArray = [];
 </div>
 
 */
+
+function cardCreator(obj){
+  const newCard = document.createElement("div"),
+        cardImage = document.createElement("img"),
+        cardInfo = document.createElement("div"),
+        cardName = document.createElement("h3"),
+        cardUsername = document.createElement("p"),
+        cardLocation = document.createElement("p"),
+        cardProfile = document.createElement("p"),
+        cardLink = document.createElement("a"),
+        cardFollowers = document.createElement("p");
+        cardFollowing = document.createElement("p"),
+        cardBio = document.createElement("p");
+
+        newCard.appendChild(cardImage);
+        newCard.appendChild(cardInfo);
+        cardInfo.appendChild(cardName);
+        cardInfo.appendChild(cardUsername);
+        cardInfo.appendChild(cardLocation);
+        cardInfo.appendChild(cardProfile);
+        cardInfo.appendChild(cardFollowers);
+        cardInfo.appendChild(cardFollowing);
+        cardInfo.appendChild(cardBio);
+        cardProfile.appendChild(cardLink);
+
+        newCard.classList.add("card");
+        cardInfo.classList.add("card-info");
+        cardName.classList.add("name");
+        cardUsername.classList.add("username");
+
+        cardImage.src = obj.avatar_url;
+        cardName.textContent = obj.name;
+        cardUsername.textContent = obj.login;
+        cardLocation.textContent = obj.location;
+        cardProfile.textContent = `Profile: `;
+        cardLink.textContent = obj.html_url;
+        cardLink.href = obj.html_url;
+        cardFollowers.textContent = `Followers: ${obj.followers}`;
+        cardFollowing.textContent = `Followers: ${obj.following}`;
+        cardBio.textContent = obj.bio;
+
+        return newCard;
+};
 
 /* List of LS Instructors Github username's: 
   tetondan
