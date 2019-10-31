@@ -8,9 +8,8 @@ const entryPoint = document.querySelector(".cards");
 axios
   .get("https://api.github.com/users/bseverino")
   .then(response => {
-    console.log(response);
-    const newProfile = cardCreator(response.data);
-    entryPoint.appendChild(newProfile);    
+    const newCard = cardCreator(response.data);
+    entryPoint.appendChild(newCard);    
   });
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -34,7 +33,16 @@ axios
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['Gremlin4544', 'zimashima', 'dlhauer', 'taylorbcool', 'michelangelo17'];
+
+followersArray.forEach(item => {
+  axios
+  .get(`https://api.github.com/users/${item}`)
+  .then(response => {
+    const newCard = cardCreator(response.data);
+    entryPoint.appendChild(newCard);    
+  });
+});
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -57,7 +65,7 @@ const followersArray = [];
 */
 
 function cardCreator(obj){
-  const newCard = document.createElement("div"),
+  const card = document.createElement("div"),
         cardImage = document.createElement("img"),
         cardInfo = document.createElement("div"),
         cardName = document.createElement("h3"),
@@ -69,8 +77,8 @@ function cardCreator(obj){
         cardFollowing = document.createElement("p"),
         cardBio = document.createElement("p");
 
-        newCard.appendChild(cardImage);
-        newCard.appendChild(cardInfo);
+        card.appendChild(cardImage);
+        card.appendChild(cardInfo);
         cardInfo.appendChild(cardName);
         cardInfo.appendChild(cardUsername);
         cardInfo.appendChild(cardLocation);
@@ -80,7 +88,7 @@ function cardCreator(obj){
         cardInfo.appendChild(cardBio);
         cardProfile.appendChild(cardLink);
 
-        newCard.classList.add("card");
+        card.classList.add("card");
         cardInfo.classList.add("card-info");
         cardName.classList.add("name");
         cardUsername.classList.add("username");
@@ -96,7 +104,7 @@ function cardCreator(obj){
         cardFollowing.textContent = `Followers: ${obj.following}`;
         cardBio.textContent = obj.bio;
 
-        return newCard;
+        return card;
 };
 
 /* List of LS Instructors Github username's: 
