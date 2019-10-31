@@ -8,9 +8,8 @@ const entryPoint = document.querySelector(".cards");
 axios
   .get("https://api.github.com/users/bseverino")
   .then(response => {
-    console.log(response);
     const newCard = cardCreator(response.data);
-    entryPoint.appendChild(newCard);    
+    entryPoint.appendChild(newCard);
   });
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -34,16 +33,28 @@ axios
           user, and adding that card to the DOM.
 */
 
+// const followersArray = [];
+// console.log(followersArray);
 const followersArray = ['Gremlin4544', 'zimashima', 'dlhauer', 'taylorbcool', 'michelangelo17'];
+
+// axios
+//   .get("https://api.github.com/users/bseverino/followers")
+//   .then(response => {
+//     response.data.forEach(item =>{
+//       followersArray.push(item.login);
+//     });
+//   });
 
 followersArray.forEach(item => {
   axios
-  .get(`https://api.github.com/users/${item}`)
-  .then(response => {
-    const newCard = cardCreator(response.data);
-    entryPoint.appendChild(newCard);    
-  });
+    .get(`https://api.github.com/users/${item}`)
+    .then(response => {
+      const newCard = cardCreator(response.data);
+      entryPoint.appendChild(newCard);    
+    });
 });
+
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -74,10 +85,16 @@ function cardCreator(obj){
         cardLocation = document.createElement("p"),
         cardProfile = document.createElement("p"),
         cardLink = document.createElement("a"),
-        cardFollowers = document.createElement("p");
+        cardFollowers = document.createElement("p"),
         cardFollowing = document.createElement("p"),
-        cardBio = document.createElement("p");
-        linkHtml = obj.html_url;
+        cardBio = document.createElement("p"),
+        cardWebsite = document.createElement("p"),
+        cardWebsiteLink = document.createElement("a"),
+        cardCreated = document.createElement("p"),
+        cardUpdated = document.createElement("p"),
+        cardButton = document.createElement("button"),  
+        linkHtml = obj.html_url,
+        webHtml = obj.blog;
 
         card.appendChild(cardImage);
         card.appendChild(cardInfo);
@@ -89,21 +106,48 @@ function cardCreator(obj){
         cardInfo.appendChild(cardFollowers);
         cardInfo.appendChild(cardFollowing);
         cardInfo.appendChild(cardBio);
+        cardInfo.appendChild(cardWebsite);
+        cardWebsite.appendChild(cardWebsiteLink);
+        cardInfo.appendChild(cardCreated);
+        cardInfo.appendChild(cardUpdated);
+        card.appendChild(cardButton);
         
 
         card.classList.add("card");
         cardInfo.classList.add("card-info");
         cardName.classList.add("name");
         cardUsername.classList.add("username");
+        cardButton.classList.add("button");
 
         cardImage.src = obj.avatar_url;
         cardName.textContent = obj.name;
         cardUsername.textContent = obj.login;
-        cardLocation.textContent = obj.location;
+        if (obj.location !== null) {
+          cardLocation.textContent = obj.location;
+        } else {cardLocation.textContent = "No location given"};
         cardLink.innerHTML = "Profile: " + linkHtml.link(obj.html_url);
         cardFollowers.textContent = `Followers: ${obj.followers}`;
-        cardFollowing.textContent = `Followers: ${obj.following}`;
-        cardBio.textContent = obj.bio;
+        cardFollowing.textContent = `Following: ${obj.following}`;
+        if (obj.bio !== null) {
+          cardBio.textContent = `Bio: ${obj.bio}`;
+        } else {cardBio.textContent = "Bio: No bio given"};
+        if (obj.blog !== "") {
+          cardWebsiteLink.innerHTML = "Website: " + webHtml.link(obj.blog);
+        } else {cardWebsite.textContent = `Website: No website given`};
+        cardCreated.textContent = `Created at: ${obj.created_at}`;
+        cardUpdated.textContent = `Last updated: ${obj.updated_at}`;
+        cardButton.textContent = "More Info";
+
+        cardButton.addEventListener('click', () => {
+          cardInfo.classList.toggle('info-open');
+          if (cardInfo.classList.contains('info-open')){
+            TweenMax.fromTo(cardInfo, 1, {css:{height:150}}, {css:{height:200}, ease:Cubic.easeOut});
+            cardButton.textContent = "Less Info";
+          } else {
+            TweenMax.fromTo(cardInfo, 1, {css:{height:200}}, {css:{height:150}, ease:Cubic.easeOut});
+            cardButton.textContent = "More Info";
+          }
+        });
 
         return card;
 };
