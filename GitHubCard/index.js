@@ -33,26 +33,34 @@ axios
           user, and adding that card to the DOM.
 */
 
-// const followersArray = [];
-// console.log(followersArray);
-const followersArray = ['Gremlin4544', 'zimashima', 'dlhauer', 'taylorbcool', 'michelangelo17'];
+const followersArray = [];
+console.log(followersArray);
+// const followersArray = ['Gremlin4544', 'zimashima', 'dlhauer', 'taylorbcool', 'michelangelo17'];
 
-// axios
-//   .get("https://api.github.com/users/bseverino/followers")
-//   .then(response => {
-//     response.data.forEach(item =>{
-//       followersArray.push(item.login);
-//     });
-//   });
-
-followersArray.forEach(item => {
-  axios
-    .get(`https://api.github.com/users/${item}`)
-    .then(response => {
-      const newCard = cardCreator(response.data);
-      entryPoint.appendChild(newCard);    
+axios
+  .get("https://api.github.com/users/bseverino/followers")
+  .then(response => {
+    response.data.forEach(item =>{
+      followersArray.push(item.login);
     });
-});
+    followersArray.forEach(item => {
+      axios
+        .get(`https://api.github.com/users/${item}`)
+        .then(response => {
+          const newCard = cardCreator(response.data);
+          entryPoint.appendChild(newCard);    
+        });
+    });
+  });
+
+// followersArray.forEach(item => {
+//   axios
+//     .get(`https://api.github.com/users/${item}`)
+//     .then(response => {
+//       const newCard = cardCreator(response.data);
+//       entryPoint.appendChild(newCard);    
+//     });
+// });
 
 
 
@@ -117,6 +125,7 @@ function cardCreator(obj){
         cardInfo.classList.add("card-info");
         cardName.classList.add("name");
         cardUsername.classList.add("username");
+        cardWebsite.classList.add("margin-above");
         cardButton.classList.add("button");
 
         cardImage.src = obj.avatar_url;
@@ -141,10 +150,10 @@ function cardCreator(obj){
         cardButton.addEventListener('click', () => {
           cardInfo.classList.toggle('info-open');
           if (cardInfo.classList.contains('info-open')){
-            TweenMax.fromTo(cardInfo, 1, {css:{height:150}}, {css:{height:200}, ease:Cubic.easeOut});
+            TweenMax.fromTo(cardInfo, 1, {css:{height:170}}, {css:{height:250}, ease:Cubic.easeOut});
             cardButton.textContent = "Less Info";
           } else {
-            TweenMax.fromTo(cardInfo, 1, {css:{height:200}}, {css:{height:150}, ease:Cubic.easeOut});
+            TweenMax.fromTo(cardInfo, 1, {css:{height:250}}, {css:{height:170}, ease:Cubic.easeOut});
             cardButton.textContent = "More Info";
           }
         });

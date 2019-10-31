@@ -110,7 +110,8 @@ body {
 }
 
 .card .card-info {
-  height: 150px;
+  height: 170px;
+  max-width: 75%;
   overflow: hidden;
 }
 
@@ -127,6 +128,10 @@ body {
   font-size: 1.8rem;
   font-style: italic;
   margin: 3px 0 10px;
+}
+
+.margin-above {
+  margin-top: 30px;
 }
 
 .button {
