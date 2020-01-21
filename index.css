@@ -95,6 +95,7 @@ body {
   width: 100%;
   padding: 20px;
   display: flex;
+  flex-wrap: wrap;
   border-radius: 5px;
   box-shadow: 0 1px 6px -2px #000;
   background-color: #FFF;
@@ -106,6 +107,12 @@ body {
   height: 150px;
   border-radius: 3px;
   margin-right: 20px;
+}
+
+.card .card-info {
+  height: 170px;
+  max-width: 75%;
+  overflow: hidden;
 }
 
 .card .name {
@@ -123,5 +130,14 @@ body {
   margin: 3px 0 10px;
 }
 
+.margin-above {
+  margin-top: 30px;
+}
 
-
+.button {
+  width: 100%;
+  margin: 25px 300px 0;
+  border: none;
+  color: white;
+  background-color: #2cb5e8;
+}
